@@ -6,8 +6,10 @@ from flask_restx import Api, Resource, fields
 app = Flask(__name__)
 
 api = Api(
-    app, version="0.1.0", title="Greetings API", description="User meta-data example"
+    app, version="0.1.0", title="User Greetings API", 
+    description="RStudio Connect User Meta-data Example"
 )
+ns = api.namespace("user-greeting")
 
 def get_credentials(req):
     """
@@ -20,10 +22,16 @@ def get_credentials(req):
     return json.loads(credential_header)
 
 
-@app.route("/hello")
-def hello():
-    user_metadata = get_credentials(request)
-    username = user_metadata.get("user")
-    if username is None:
-        return {"message": "Howdy, stranger."}
-    return {"message": f"So nice to see you, {username}."}
+@ns.route("/hello")
+class UserGreeting(Resource):
+    """Prints greeting message to RSC named user"""
+
+    def get(self):
+        user_metadata = get_credentials(request)
+        username = user_metadata.get("user")
+        if username is None:
+            return {"message": "Howdy, stranger."}
+        return {"message": f"So nice to see you, {username}."}
+
+if __name__ == "__main__":
+    app.run(debug=True)
