@@ -1,0 +1,3 @@
+flask
+flask-restx
+werkzeug <= 0.16.1
