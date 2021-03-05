@@ -4,12 +4,16 @@ from flask import Flask, request
 from flask_restx import Api, Resource, fields
 
 app = Flask(__name__)
+app.config["SWAGGER_UI_DOC_EXPANSION"] = "list"
+app.config["RESTX_MASK_SWAGGER"] = False
+app.config["ERROR_INCLUDE_MESSAGE"] = False
 
 api = Api(
     app, version="0.1.0", title="User Greetings API", 
-    description="RStudio Connect User Meta-data Example"
+    description="Flask APIs can access the username and the names of the groups of the current logged "
+    "in user by parsing the RStudio-Connect-Credentials request header."
 )
-ns = api.namespace("user-greeting")
+ns = api.namespace("user-greeting", description='request header parse test')
 
 def get_credentials(req):
     """
