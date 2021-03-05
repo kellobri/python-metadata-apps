@@ -1,9 +1,13 @@
 import json
 
 from flask import Flask, request
+from flask_restx import Api, Resource, fields
 
 app = Flask(__name__)
 
+api = Api(
+    app, version="0.1.0", title="Greetings API", description="User meta-data example"
+)
 
 def get_credentials(req):
     """
